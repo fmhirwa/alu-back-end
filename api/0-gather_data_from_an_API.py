@@ -20,7 +20,7 @@ if __name__ == '__main__':
     user_info = requests.get(user_url).json()
     todos_info = requests.get(todos_url).json()
 
-     # Extract the employee's name from the user information
+    # Extract the employee's name from the user information
     employee_name = user_info["name"]
     # Filter the todos to get the completed tasks
     task_completed = list(filter(lambda obj:
