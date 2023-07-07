@@ -1,10 +1,10 @@
 #!/usr/bin/python3
-""" Module"""
+"""Module"""
 
 import requests
 import sys
 
-""" Documented"""
+"""Module"""
 
 if __name__ == "__main__":
     """ Get employee ID from command line argument """
