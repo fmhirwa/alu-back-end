@@ -1,40 +1,52 @@
 #!/usr/bin/python3
-"""
-Module: employee_todo_report
-This module retrieves information about an employee's TODO list from a REST API and generates a CSV report.
-"""
+"""Module"""
 
 import requests
 import sys
 
-
-if __name__ == '__main__':
-    """IF SCRIPT IS NOT RUN AS MODULE"""
-
-    # Retrieve the employee ID from the command-line argument
+if __name__ == "__main__":
+    # Get employee ID from command line argument
     employee_id = sys.argv[1]
 
-    # Construct the URLs for user and todos information using the employee ID
-    user_url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
-    todos_url = f"https://jsonplaceholder.typicode.com/users/{employee_id}/todos/"
+    # Get user and todos URLs
+    user_url = "https://jsonplaceholder.typicode.com/users/{}".format(employee_id)
+    todos_url = "https://jsonplaceholder.typicode.com/users/{}/todos/".format(
+        employee_id
+    )
 
-    # Send HTTP GET requests to the URLs and retrieve the JSON responses
-    user_info = requests.get(user_url).json()
-    todos_info = requests.get(todos_url).json()
+    # Get user and todos information from URLs
+    user_info = requests.request("GET", user_url).json()
+    todos_info = requests.request("GET", todos_url).json()
 
-    # Extract the employee's name and username from the user information
+    # Extract employee name and username from user information
     employee_name = user_info["name"]
     employee_username = user_info["username"]
 
-    # Filter the todos to get the completed tasks
-    task_completed = list(filter(lambda obj: obj["completed"] is True, todos_info))
-
-    # Calculate the number of completed tasks and total number of tasks
+    # Filter completed tasks and get number of done tasks
+    task_completed = list(filter(lambda obj: (obj["completed"] is True), todos_info))
     number_of_done_tasks = len(task_completed)
+
+    # Get total number of tasks
     total_number_of_tasks = len(todos_info)
 
-    # Generate a CSV report with employee's ID, username, task completion status, and task title
-    with open(f"{employee_id}.csv", "w") as file:
-        for task in todos_info:
-            file.write(f'"{employee_id}","{employee_username}","{task["completed"]}","{task["title"]}"
-')
+    # Write employee ID, username, task completion status and title to CSV file
+    with open(str(employee_id) + ".csv", "w") as file:
+        [
+            file.write(
+                '"'
+                + str(employee_id)
+                + '",'
+                + '"'
+                + employee_username
+                + '",'
+                + '"'
+                + str(task["completed"])
+                + '",'
+                + '"'
+                + task["title"]
+                + '",'
+                + "
+"
+            )
+            for task in todos_info
+        ]
