@@ -4,8 +4,10 @@
 import requests
 import sys
 
+"""Documented"""
+
 if __name__ == "__main__":
-    # Get employee ID from command line argument
+    """Get employee ID from command line argument"""
     employee_id = sys.argv[1]
 
     # Get user and todos URLs
